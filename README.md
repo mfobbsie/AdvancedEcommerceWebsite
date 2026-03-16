@@ -1,73 +1,163 @@
-# React + TypeScript + Vite
+# Advanced E‑Commerce Website
+A responsive, React‑based e‑commerce storefront built to demonstrate modern frontend development skills, including dynamic product filtering, global cart state management, React Router navigation, and a polished Bootstrap UI. Products are fetched from the Fake Store API, and users can browse items, filter by category, add products to a cart, and simulate a checkout experience with a lightweight success banner.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Table of Contents
+Overview
 
-Currently, two official plugins are available:
+Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Tech Stack
 
-## React Compiler
+Project Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Installation
 
-## Expanding the ESLint configuration
+Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+API
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Screenshots
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Future Enhancements
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Credits
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Author
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛍️ Overview
+This project is a fully functional front‑end e‑commerce experience built with React, TypeScript, React Query, React Router, and Bootstrap. It demonstrates:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Clean component architecture
+
+Global state management using React Context
+
+API data fetching with caching
+
+Dynamic UI updates
+
+A responsive, user‑friendly shopping flow
+
+The goal was to create a polished, real‑world style storefront while strengthening React fundamentals and modern tooling.
+
+## ✨ Features
+Product Listing  
+Fetches products from Fake Store API and displays them in responsive Bootstrap cards.
+
+Category Filtering  
+Users can filter products by category using a dropdown in the navbar.
+
+Global Shopping Cart  
+Add/remove items from anywhere in the app using a shared CartContext.
+
+Cart Quantity Tracking  
+Navbar displays the total number of items in the cart in real time.
+
+Checkout Simulation  
+A lightweight success banner appears after checkout and fades out automatically.
+
+Routing  
+React Router powers navigation between the Home page and Cart page.
+
+Responsive UI  
+Built with Bootstrap for clean, mobile‑friendly layouts.
+
+## 🧰 Tech Stack
+React + TypeScript
+
+React Router
+
+React Query
+
+React Context API
+
+Bootstrap 5
+
+Axios
+
+Vite
+
+## 📁 Project Structure
+Code
+src/
+│── api.ts
+│── App.tsx
+│── CartContext.tsx
+│── main.tsx
+│── NavBar.tsx
+│── ProductsList.tsx
+│── ViewShoppingCart.tsx
+│── App.css
+## ⚙️ Installation
+Clone the repository:
+
+bash
+git clone https://github.com/YOUR_USERNAME/AdvancedECommerceWebsite
+cd AdvancedECommerceWebsite
+Install dependencies:
+
+bash
+npm install
+Start the development server:
+
+bash
+npm run dev
+## 🚀 Usage
+Browse products on the home page
+
+Filter by category using the navbar dropdown
+
+Add items to your cart
+
+View your cart via the navbar
+
+Remove items or clear the cart
+
+Click Checkout to simulate a purchase and trigger a success banner
+
+## 🌐 API
+This project uses the Fake Store API:
+
+Code
+https://fakestoreapi.com/products
+It returns product data including:
+
+Title
+
+Price
+
+Description
+
+Category
+
+Rating
+
+Image
+
+## 🔮 Future Enhancements
+Product detail pages
+
+User authentication
+
+Persistent cart (localStorage)
+
+Search bar
+
+Dark mode
+
+Backend integration for real checkout
+
+## 🙏 Credits
+Fake Store API
+
+Bootstrap documentation
+
+React Query documentation
+
+Coding Temple bootcamp
+
+GitHub Copilot assistance
+
+👩‍💻 Author
+Mary Fobbs‑Guillory  
+Library professional transitioning into software engineering
+San Francisco Bay Area

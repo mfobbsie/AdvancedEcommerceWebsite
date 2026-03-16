@@ -15,7 +15,7 @@ function App() {
 
         <div className="products">
           <h2>Featured Products</h2>
-          <ProductsList />
+          <ProductsList selectedCategory="all" />
         </div>
       </section>
     </>

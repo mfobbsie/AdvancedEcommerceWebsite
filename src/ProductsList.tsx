@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, Col, Row, Spinner, Alert, Badge, Button } from "react-bootstrap";
-import { fetchProducts, type Product } from "./api";
+import { fetchProducts } from "./api";
+import { useCart } from "./CartContext";
+
 
 type ProductsListProps = {
   selectedCategory: string;
 };
 
 export default function ProductsList({ selectedCategory }: ProductsListProps) {
-  const { data, isLoading, error } = useQuery<Product[]>({
+  const { addToCart } = useCart();
+  const { data, isLoading, error } = useQuery({
     queryKey: ["products"],
     queryFn: fetchProducts,
   });
@@ -65,7 +68,15 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
               <Button
                 variant="primary"
                 className="mt-auto"
-                onClick={() => console.log("Add to cart:", product.id)}
+                onClick={() =>
+                  addToCart({
+                    id: product.id,
+                    title: product.title,
+                    image: product.image,
+                    price: product.price,
+                    quantity: 1,
+                  })
+                }
               >
                 Add to Cart
               </Button>

@@ -1,17 +1,17 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 type NavBarProps = {
   onCategoryChange: (category: string) => void;
 };
 
-export default function NavBar({ onCategoryChange }: NavBarProps) {
+export default function NavBar({ onCategoryChange }) {
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div className="container">
-          <a className="navbar-brand" href="#">
+          <Link className="navbar-brand" to="/">
             Online Store
-          </a>
+          </Link>
 
           <button
             className="navbar-toggler"
@@ -25,9 +25,9 @@ export default function NavBar({ onCategoryChange }: NavBarProps) {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item">
-                <a className="nav-link active" href="#">
+                <Link className="nav-link" to="/">
                   Home
-                </a>
+                </Link>
               </li>
 
               <li className="nav-item dropdown">
@@ -86,9 +86,9 @@ export default function NavBar({ onCategoryChange }: NavBarProps) {
               </li>
 
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <Link className="nav-link" to="/cart">
                   Cart
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

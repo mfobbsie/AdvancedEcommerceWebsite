@@ -3,7 +3,7 @@ import { Card, Col, Row, Spinner, Alert, Badge, Button } from "react-bootstrap";
 import { fetchProducts, type Product } from "./api";
 
 type ProductsListProps = {
-  selectedCategory: string; // "all", "electronics", "jewelery", etc.
+  selectedCategory: string;
 };
 
 export default function ProductsList({ selectedCategory }: ProductsListProps) {
@@ -15,7 +15,7 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
   if (isLoading)
     return (
       <div className="d-flex justify-content-center mt-4">
-        <Spinner animation="border" variant="light" />
+        <Spinner animation="border" />
       </div>
     );
 
@@ -26,7 +26,6 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
       </Alert>
     );
 
-  // Filter products by category
   const filteredProducts =
     selectedCategory === "all"
       ? data
@@ -46,7 +45,7 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
             />
 
             <Card.Body className="d-flex flex-column">
-              <Card.Title className="product-title">{product.title}</Card.Title>
+              <Card.Title>{product.title}</Card.Title>
 
               <Badge bg="secondary" className="mb-2 align-self-start">
                 {product.category}

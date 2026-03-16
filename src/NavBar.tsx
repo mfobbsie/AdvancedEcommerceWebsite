@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 type NavBarProps = {
   onCategoryChange: (category: string) => void;
 };
 
-export default function NavBar({ onCategoryChange }) {
+export default function NavBar({ onCategoryChange }: NavBarProps) {
+  const { cartItems } = useCart();
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
@@ -87,7 +91,7 @@ export default function NavBar({ onCategoryChange }) {
 
               <li className="nav-item">
                 <Link className="nav-link" to="/cart">
-                  Cart
+                  Cart {totalItems > 0 && `(${totalItems})`}
                 </Link>
               </li>
             </ul>

@@ -21,7 +21,7 @@ export default function App() {
           element={
             <section id="center">
               <div className="hero">
-                <h1>Welcome to our online store!</h1>
+                <h1>Welcome to Stitch & Spark!</h1>
                 <p>
                   Discover a wide range of products at unbeatable prices. Shop
                   now and experience the best in online shopping!

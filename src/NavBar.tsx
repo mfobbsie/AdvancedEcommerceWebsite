@@ -20,8 +20,8 @@ export default function NavBar({ onCategoryChange }: NavBarProps) {
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div className="container">
-          <Link className="navbar-brand" to="/">
-            Online Store
+           <Link className="navbar-brand" to="/">
+            <img src="/assets/logo.svg" alt="Stitch & Spark Logo" />
           </Link>
 
           <button

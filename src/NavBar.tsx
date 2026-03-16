@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCategories } from "./api";
 
 type NavBarProps = {
   onCategoryChange: (category: string) => void;
@@ -8,6 +10,11 @@ type NavBarProps = {
 export default function NavBar({ onCategoryChange }: NavBarProps) {
   const { cartItems } = useCart();
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
 
   return (
     <header>
@@ -34,62 +41,41 @@ export default function NavBar({ onCategoryChange }: NavBarProps) {
                 </Link>
               </li>
 
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="categoryDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                >
-                  Filter Categories
-                </a>
+<li className="nav-item dropdown">
+  <a
+    className="nav-link dropdown-toggle"
+    href="#"
+    id="categoryDropdown"
+    role="button"
+    data-bs-toggle="dropdown"
+  >
+    Filter Categories
+  </a>
 
-                <ul className="dropdown-menu">
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => onCategoryChange("all")}
-                    >
-                      All
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => onCategoryChange("electronics")}
-                    >
-                      Electronics
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => onCategoryChange("jewelery")}
-                    >
-                      Jewelry
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => onCategoryChange("men's clothing")}
-                    >
-                      Men's Clothing
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => onCategoryChange("women's clothing")}
-                    >
-                      Women's Clothing
-                    </button>
-                  </li>
-                </ul>
-              </li>
+  <ul className="dropdown-menu">
+    <li>
+      <button
+        className="dropdown-item"
+        onClick={() => onCategoryChange("all")}
+      >
+        All
+      </button>
+    </li>
 
-              <li className="nav-item">
+    {categories?.map((category) => (
+      <li key={category}>
+        <button
+          className="dropdown-item text-capitalize"
+          onClick={() => onCategoryChange(category)}
+        >
+          {category}
+        </button>
+      </li>
+    ))}
+  </ul>
+</li>
+
+<li className="nav-item">
                 <Link className="nav-link" to="/cart">
                   Cart {totalItems > 0 && `(${totalItems})`}
                 </Link>

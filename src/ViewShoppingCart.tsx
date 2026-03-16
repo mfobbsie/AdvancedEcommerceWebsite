@@ -45,7 +45,14 @@ const [successMessage, setSuccessMessage] = useState("");
             key={item.id}
             className="list-group-item d-flex align-items-center"
           >
-            <img src={item.image} width={50} className="me-3" />
+            <img
+              src={item.image}
+              width={50}
+              className="me-3"
+              onError={(e) => {
+                e.currentTarget.src = "https://fakestoreapi.com/icons/logo.png";
+              }}
+            />
             <div className="flex-grow-1">
               <strong>{item.title}</strong>
               <div>

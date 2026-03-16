@@ -45,6 +45,9 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
               alt={product.title}
               className="product-image p-3"
               style={{ height: "220px", objectFit: "contain" }}
+              onError={(e) => {
+                e.currentTarget.src = "https://fakestoreapi.com/icons/logo.png";
+              }}
             />
 
             <Card.Body className="d-flex flex-column">

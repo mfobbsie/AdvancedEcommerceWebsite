@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCategories } from "./api";
+import { fetchCategories } from "./fetchCategories";
 
 type NavBarProps = {
   onCategoryChange: (category: string) => void;

@@ -9,6 +9,7 @@ import ProductsList from "./ProductsList";
 import ViewShoppingCart from "./ViewShoppingCart";
 import Login from "./Login";
 import Register from "./Register";
+import AddProductForm from "./AddProductForm";
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -45,6 +46,7 @@ export default function App() {
         {/* Auth pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/add-product" element={<AddProductForm />} />
       </Routes>
     </Router>
   );

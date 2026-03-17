@@ -1,8 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, Col, Row, Spinner, Alert, Badge, Button } from "react-bootstrap";
-import { fetchProducts } from "./api";
 import { useCart } from "./CartContext";
+import { fetchProducts} from "./fetchProducts";
 
+type Product = {
+  id: string;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+};
 
 type ProductsListProps = {
   selectedCategory: string;
@@ -10,7 +22,7 @@ type ProductsListProps = {
 
 export default function ProductsList({ selectedCategory }: ProductsListProps) {
   const { addToCart } = useCart();
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: fetchProducts,
   });

@@ -11,6 +11,8 @@ import AddProductForm from "./AddProductForm";
 import ProtectedRoute from "./ProtectedRoute";
 import EditProductForm from "./EditProductForm";
 import UserProfile from "./UserProfile";
+import OrderHistory from "./OrderHistory";
+import OrderDetails from "./OrderDetails";
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -65,6 +67,8 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/orders" element={<OrderHistory />} />
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
       </Routes>
     </Router>
   );

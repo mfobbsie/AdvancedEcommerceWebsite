@@ -1,31 +1,47 @@
 import { useCart } from "./CartContext";
 import { useState } from "react";
+import { useAuth } from "./useAuth";
+import { createOrder } from "./createOrder";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewShoppingCart() {
   const { cartItems, removeFromCart, clearCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
   );
+
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleCheckout = () => {
-    setSuccessMessage(
-      `Checkout successful! You purchased ${totalItems} items for $${totalPrice.toFixed(2)}.`,
-    );
+  const handleCheckout = async () => {
+    if (!user) {
+      setSuccessMessage("You must be logged in to checkout.");
+      return;
+    }
 
-    // Fade out after 3 seconds
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 3000);
+    try {
+      const orderId = await createOrder(user.uid, cartItems);
 
-    clearCart();
+      clearCart();
+
+      setSuccessMessage(
+        `Checkout successful! You purchased ${totalItems} items for $${totalPrice.toFixed(2)}.`,
+      );
+
+      setTimeout(() => {
+        navigate(`/orders/${orderId}`);
+      }, 1500);
+    } catch (error) {
+      console.error("Checkout error:", error);
+      setSuccessMessage("Something went wrong during checkout.");
+    }
   };
 
-  
 
   return (
     <div className="container mt-4">
@@ -53,6 +69,7 @@ const [successMessage, setSuccessMessage] = useState("");
                 e.currentTarget.src = "https://fakestoreapi.com/icons/logo.png";
               }}
             />
+
             <div className="flex-grow-1">
               <strong>{item.title}</strong>
               <div>
@@ -76,9 +93,15 @@ const [successMessage, setSuccessMessage] = useState("");
           <h4 className="mt-3">
             Total Items: {totalItems} — Total Price: ${totalPrice.toFixed(2)}
           </h4>
-          <button className="btn-brand-yellow mt-2" style={{ borderRadius: "12px" }} onClick={clearCart}>
+
+          <button
+            className="btn-brand-yellow mt-2"
+            style={{ borderRadius: "12px" }}
+            onClick={clearCart}
+          >
             Clear Cart
           </button>
+
           <button
             className="btn-brand-green mt-2 ms-2"
             style={{ borderRadius: "12px" }}

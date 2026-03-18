@@ -31,12 +31,14 @@ export default function NavBar({
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div className="container">
+          {/* Logo */}
           <Link className="navbar-brand" to="/">
             <img src="/assets/logo.svg" alt="Stitch & Spark Logo" />
           </Link>
 
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
+              {/* Home */}
               <li className="nav-item">
                 <Link className="nav-link" to="/">
                   Home
@@ -50,7 +52,7 @@ export default function NavBar({
                   href="#"
                   data-bs-toggle="dropdown"
                 >
-                  Filter Categories
+                  Categories
                 </a>
                 <ul className="dropdown-menu">
                   <li>
@@ -77,34 +79,48 @@ export default function NavBar({
 
               {/* Logged-in user */}
               {user && (
-                <>
-                  <li className="nav-item">
-                    <span className="nav-link">
-                      Hello, {profile?.name || "User"}!
-                    </span>
-                  </li>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                  >
+                    Hello, {profile?.name || "User"}
+                  </a>
 
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
+                  <ul className="dropdown-menu dropdown-menu-end">
+                    <li>
+                      <Link className="dropdown-item" to="/profile">
+                        View Profile
+                      </Link>
+                    </li>
 
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/add-product">
-                      Add Product
-                    </Link>
-                  </li>
+                    <li>
+                      <Link className="dropdown-item" to="/add-product">
+                        Add Product
+                      </Link>
+                    </li>
 
-                  <li className="nav-item">
-                    <button
-                      className="btn-brand-grey ms-2"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
+                    <li>
+                      <Link className="dropdown-item" to="/orders">
+                        Order History
+                      </Link>
+                    </li>
+
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+
+                    <li>
+                      <button
+                        className="dropdown-item text-danger"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
               )}
 
               {/* Guest user */}
@@ -127,7 +143,7 @@ export default function NavBar({
               {/* Cart */}
               <li className="nav-item">
                 <Link className="nav-link" to="/cart">
-                  Cart {totalItems > 0 && `(${totalItems})`}
+                  🛒 {totalItems > 0 && <span>({totalItems})</span>}
                 </Link>
               </li>
             </ul>

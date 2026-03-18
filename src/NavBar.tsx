@@ -1,13 +1,12 @@
+// NavBar.tsx
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategories } from "./fetchCategories";
+import { useAuth } from "./useAuth";
 
-type NavBarProps = {
-  onCategoryChange: (category: string) => void;
-};
-
-export default function NavBar({ onCategoryChange }: NavBarProps) {
+export default function NavBar({ onCategoryChange }: { onCategoryChange: (category: string) => void }) {
+  const user = useAuth();
   const { cartItems } = useCart();
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -20,18 +19,9 @@ export default function NavBar({ onCategoryChange }: NavBarProps) {
     <header>
       <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div className="container">
-           <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/">
             <img src="/assets/logo.svg" alt="Stitch & Spark Logo" />
           </Link>
-
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
 
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
@@ -41,41 +31,60 @@ export default function NavBar({ onCategoryChange }: NavBarProps) {
                 </Link>
               </li>
 
-<li className="nav-item dropdown">
-  <a
-    className="nav-link dropdown-toggle"
-    href="#"
-    id="categoryDropdown"
-    role="button"
-    data-bs-toggle="dropdown"
-  >
-    Filter Categories
-  </a>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  Filter Categories
+                </a>
+                <ul className="dropdown-menu">
+                  <li>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => onCategoryChange("all")}
+                    >
+                      All
+                    </button>
+                  </li>
+                  {categories?.map((category) => (
+                    <li key={category}>
+                      <button
+                        className="dropdown-item text-capitalize"
+                        onClick={() => onCategoryChange(category)}
+                      >
+                        {category}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </li>
 
-  <ul className="dropdown-menu">
-    <li>
-      <button
-        className="dropdown-item"
-        onClick={() => onCategoryChange("all")}
-      >
-        All
-      </button>
-    </li>
+              {user && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/add-product">
+                    Add Product
+                  </Link>
+                </li>
+              )}
 
-    {categories?.map((category) => (
-      <li key={category}>
-        <button
-          className="dropdown-item text-capitalize"
-          onClick={() => onCategoryChange(category)}
-        >
-          {category}
-        </button>
-      </li>
-    ))}
-  </ul>
-</li>
+              {!user && (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/register">
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
 
-<li className="nav-item">
+              <li className="nav-item">
                 <Link className="nav-link" to="/cart">
                   Cart {totalItems > 0 && `(${totalItems})`}
                 </Link>

@@ -61,7 +61,8 @@ const [successMessage, setSuccessMessage] = useState("");
             </div>
 
             <button
-              className="btn btn-danger btn-sm"
+              className="btn-brand-grey"
+              style={{ borderRadius: "12px" }}
               onClick={() => removeFromCart(item.id)}
             >
               Remove
@@ -75,11 +76,12 @@ const [successMessage, setSuccessMessage] = useState("");
           <h4 className="mt-3">
             Total Items: {totalItems} — Total Price: ${totalPrice.toFixed(2)}
           </h4>
-          <button className="btn btn-warning mt-2" onClick={clearCart}>
+          <button className="btn-brand-yellow mt-2" style={{ borderRadius: "12px" }} onClick={clearCart}>
             Clear Cart
           </button>
           <button
-            className="btn btn-success mt-2 ms-2"
+            className="btn-brand-green mt-2 ms-2"
+            style={{ borderRadius: "12px" }}
             onClick={handleCheckout}
           >
             Checkout

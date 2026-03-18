@@ -2,25 +2,28 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "./firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("Login successful!");
-    } catch (err: unknown) {
+      navigate("/");
+    } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
-      } else {
-        setError("An unknown error occurred");
+        alert("Login failed: " + err.message);
       }
     }
   };
+
 
   const handleLogout = async () => {
     try {

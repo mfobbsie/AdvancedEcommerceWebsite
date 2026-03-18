@@ -1,10 +1,11 @@
-// AddProductForm.tsx
-import { useState } from "react";
+// EditProductForm.tsx
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { db } from "./firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
-export default function AddProductForm() {
+export default function EditProductForm() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({
@@ -15,61 +16,71 @@ export default function AddProductForm() {
     image: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  useEffect(() => {
+    async function loadProduct() {
+      const ref = doc(db, "products", id);
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        setProduct(snap.data());
+      }
+    }
+    loadProduct();
+  }, [id]);
+
+  const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await addDoc(collection(db, "products"), {
+    await updateDoc(doc(db, "products", id), {
       title: product.title,
       price: Number(product.price),
       category: product.category,
       description: product.description,
       image: product.image,
-      rating: { rate: 0, count: 0 },
     });
 
-    navigate("/"); // go home after adding
+    navigate("/");
   };
 
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
-      <h2>Add Product</h2>
+      <h2>Edit Product</h2>
 
       <input
         name="title"
+        value={product.title}
         onChange={handleChange}
-        placeholder="Title"
         className="form-control mb-2"
       />
       <input
         name="price"
+        value={product.price}
         onChange={handleChange}
-        placeholder="Price"
         className="form-control mb-2"
       />
       <input
         name="category"
+        value={product.category}
         onChange={handleChange}
-        placeholder="Category"
         className="form-control mb-2"
       />
       <textarea
         name="description"
+        value={product.description}
         onChange={handleChange}
-        placeholder="Description"
         className="form-control mb-2"
       />
       <input
         name="image"
+        value={product.image}
         onChange={handleChange}
-        placeholder="Image URL"
         className="form-control mb-2"
       />
 
-      <button className="mt-auto btn-brand-green" style={{ borderRadius: "12px" }}>Add Product</button>
+      <button className="btn-brand-yellow" style={{ borderRadius: "12px" }}>Save Changes</button>
     </form>
   );
 }

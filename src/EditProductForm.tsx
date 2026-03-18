@@ -18,22 +18,24 @@ export default function EditProductForm() {
 
   useEffect(() => {
     async function loadProduct() {
+      if (!id) return;
       const ref = doc(db, "products", id);
       const snap = await getDoc(ref);
       if (snap.exists()) {
-        setProduct(snap.data());
+        setProduct(snap.data() as typeof product);
       }
     }
     loadProduct();
   }, [id]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!id) return;
     await updateDoc(doc(db, "products", id), {
       title: product.title,
       price: Number(product.price),

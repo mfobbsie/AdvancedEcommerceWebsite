@@ -10,6 +10,7 @@ import Register from "./Register";
 import AddProductForm from "./AddProductForm";
 import ProtectedRoute from "./ProtectedRoute";
 import EditProductForm from "./EditProductForm";
+import UserProfile from "./UserProfile";
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -28,7 +29,7 @@ export default function App() {
                 <p>Discover a wide range of products at unbeatable prices.</p>
               </div>
 
-              <div className="products container mt-4">
+              <div className="products-overlay">
                 <h2>Featured Products</h2>
                 <ProductsList selectedCategory={selectedCategory} />
               </div>
@@ -53,6 +54,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <EditProductForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
             </ProtectedRoute>
           }
         />

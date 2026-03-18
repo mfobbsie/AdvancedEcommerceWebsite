@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { auth } from "./firebaseConfig";
-import { onAuthStateChanged, type User } from "firebase/auth";
+import { onAuthStateChanged, type User, signOut } from "firebase/auth";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
@@ -14,5 +18,5 @@ export function useAuth() {
     return () => unsub();
   }, []);
 
-  return { user, loading };
+  return { user, loading, handleLogout };
 }

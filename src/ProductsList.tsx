@@ -41,7 +41,7 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
     await deleteDoc(doc(db, "products", id));
 
     // Refresh product list
-    queryClient.invalidateQueries(["products"]); // <-- FIXED
+    queryClient.invalidateQueries({ queryKey: ["products"] });
   }
 
   if (isLoading)

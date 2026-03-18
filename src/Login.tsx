@@ -1,63 +1,50 @@
-// Login.tsx
 import { useState } from "react";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
       navigate("/");
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-        alert("Login failed: " + err.message);
-      }
-    }
-  };
-
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      alert("Logged out!");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error("Logout error:", err.message);
-      } else {
-        console.error("An unknown error occurred during logout");
-      }
+      if (err instanceof Error) setError(err.message);
     }
   };
 
   return (
-    <>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-        {error && <p>{error}</p>}
-      </form>
-      <button onClick={handleLogout}>Logout</button>
-    </>
+    <form onSubmit={handleLogin} className="container mt-4">
+      <h2>Login</h2>
+
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="form-control mb-2"
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="form-control mb-2"
+      />
+
+      <button className="btn-brand-green">Login</button>
+
+      {error && <p className="text-danger mt-2">{error}</p>}
+    </form>
   );
 };
 

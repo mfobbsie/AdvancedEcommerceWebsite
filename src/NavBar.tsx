@@ -1,19 +1,31 @@
-// NavBar.tsx
 import { Link } from "react-router-dom";
 import { useCart } from "./CartContext";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCategories } from "./fetchCategories";
 import { useAuth } from "./useAuth";
+import { useUserProfile } from "./useUserProfile";
+import { signOut } from "firebase/auth";
+import { auth } from "./firebaseConfig";
 
-export default function NavBar({ onCategoryChange }: { onCategoryChange: (category: string) => void }) {
-  const user = useAuth();
+export default function NavBar({
+  onCategoryChange,
+}: {
+  onCategoryChange: (category: string) => void;
+}) {
+  const { user } = useAuth();
+  const { profile } = useUserProfile();
   const { cartItems } = useCart();
+
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
 
   return (
     <header>
@@ -31,6 +43,7 @@ export default function NavBar({ onCategoryChange }: { onCategoryChange: (catego
                 </Link>
               </li>
 
+              {/* Category Filter */}
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -48,6 +61,7 @@ export default function NavBar({ onCategoryChange }: { onCategoryChange: (catego
                       All
                     </button>
                   </li>
+
                   {categories?.map((category) => (
                     <li key={category}>
                       <button
@@ -61,14 +75,39 @@ export default function NavBar({ onCategoryChange }: { onCategoryChange: (catego
                 </ul>
               </li>
 
+              {/* Logged-in user */}
               {user && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/add-product">
-                    Add Product
-                  </Link>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <span className="nav-link">
+                      Hello, {profile?.name || "User"}!
+                    </span>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      Profile
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/add-product">
+                      Add Product
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <button
+                      className="btn-brand-grey ms-2"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
               )}
 
+              {/* Guest user */}
               {!user && (
                 <>
                   <li className="nav-item">
@@ -76,6 +115,7 @@ export default function NavBar({ onCategoryChange }: { onCategoryChange: (catego
                       Login
                     </Link>
                   </li>
+
                   <li className="nav-item">
                     <Link className="nav-link" to="/register">
                       Register
@@ -84,6 +124,7 @@ export default function NavBar({ onCategoryChange }: { onCategoryChange: (catego
                 </>
               )}
 
+              {/* Cart */}
               <li className="nav-item">
                 <Link className="nav-link" to="/cart">
                   Cart {totalItems > 0 && `(${totalItems})`}

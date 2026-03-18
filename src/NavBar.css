@@ -1,0 +1,33 @@
+.navbar-brand img {
+  height: 48px;
+}
+
+.navbar {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(6px);
+  border-bottom: 2px solid rgba(106, 143, 114, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.nav-link {
+  font-family: "League Spartan", sans-serif;
+  color: #3b3a36 !important;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #6A8F72 !important;
+}
+
+.dropdown-menu {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+.navbar .nav-link {
+  font-weight: 600;
+}
+
+.navbar .nav-link span {
+  color: #6A8F72;
+}

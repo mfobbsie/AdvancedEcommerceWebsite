@@ -66,7 +66,7 @@ export default function ViewShoppingCart() {
               width={50}
               className="me-3"
               onError={(e) => {
-                e.currentTarget.src = "https://fakestoreapi.com/icons/logo.png";
+                e.currentTarget.src = "assets/placeholder.jpg";
               }}
             />
 

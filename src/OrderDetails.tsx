@@ -1,52 +1,92 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { db } from "./firebaseConfig";
-import { doc, getDoc, type DocumentData } from "firebase/firestore";
+ import { useEffect, useState } from "react";
+ import { useParams } from "react-router-dom";
+ import { db } from "./firebaseConfig";
+ import { doc, getDoc, type DocumentData } from "firebase/firestore";
 
-export default function OrderDetails() {
-  const { orderId } = useParams();
-  const [order, setOrder] = useState<DocumentData | null>(null);
+ type OrderItem = {
+   title: string;
+   price: number;
+   quantity: number;
+   image: string;
+ };
 
-  useEffect(() => {
-    async function loadOrder() {
-      if (!orderId) return;
 
-      const ref = doc(db, "orders", orderId);
-      const snap = await getDoc(ref);
+ export default function OrderDetails() {
+   const { orderId } = useParams();
+   type OrderData = {
+     createdAt: any;
+     totalPrice: number;
+     items: OrderItem[];
+   };
 
-      if (snap.exists()) {
-        setOrder(snap.data());
-      }
-    }
+   const [order, setOrder] = useState<OrderData | null>(null);
+   const [error, setError] = useState<string | null>(null);
 
-    loadOrder();
-  }, [orderId]);
+   useEffect(() => {
+     async function loadOrder() {
+       if (!orderId) return;
 
-  if (!order) return <p>Loading...</p>;
+       try {
+         const ref = doc(db, "orders", orderId);
+         const snap = await getDoc(ref);
 
-  return (
-    <div className="container mt-4">
-      <h2>Order #{orderId}</h2>
+         if (snap.exists()) {
+           setOrder(snap.data() as OrderData);
+         } else {
+           setOrder(null);
+         }
+       } catch (err) {
+         console.error("Failed to load order:", err);
+         setError("Error loading order");
+         setOrder(null);
+       }
+     }
 
-      <p>Date: {order.createdAt.toDate().toLocaleString()}</p>
-      <p>Total: ${order.totalPrice.toFixed(2)}</p>
+     loadOrder();
+   }, [orderId]);
 
-      <h4>Items</h4>
-      <ul className="list-group">
-        {order.items.map((item, index) => (
-          <li
-            key={index}
-            className="list-group-item d-flex justify-content-between"
-          >
-            <div>
-              <strong>{item.title}</strong>
-              <br />
-              Quantity: {item.quantity}
-            </div>
-            <div>${(item.price * item.quantity).toFixed(2)}</div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+   if (error) return <p>{error}</p>;
+   if (!order) return <p>Loading...</p>;
+
+   return (
+     <div className="container mt-4">
+       <h2>Order #{orderId}</h2>
+
+       <p>Date: {order.createdAt.toDate().toLocaleString()}</p>
+       <p>Total: ${order.totalPrice.toFixed(2)}</p>
+
+       <h4>Items</h4>
+       <ul className="list-group">
+         {order.items.map((item: OrderItem, index: number) => (
+           <li
+             key={index}
+             className="list-group-item d-flex align-items-center justify-content-between"
+           >
+             <div className="d-flex align-items-center">
+               <img
+                 src={item.image}
+                 alt={item.title}
+                 width={60}
+                 height={60}
+                 style={{ objectFit: "contain", marginRight: "12px" }}
+                 onError={(e) => {
+                   e.currentTarget.src = "assets/placeholder.jpg";
+                 }}
+               />
+
+               <div>
+                 <strong>{item.title}</strong>
+                 <br />
+                 Quantity: {item.quantity}
+               </div>
+             </div>
+
+             <div className="fw-bold">
+               ${(item.price * item.quantity).toFixed(2)}
+             </div>
+           </li>
+         ))}
+       </ul>
+     </div>
+   );
+ }

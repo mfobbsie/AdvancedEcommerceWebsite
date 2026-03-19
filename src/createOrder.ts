@@ -1,9 +1,20 @@
 import { db } from "./firebaseConfig";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 
-export async function createOrder(userId, cartItems) {
+export type CartItem = {
+  id: string;
+  title: string;
+  image: string;
+  price: number;
+  quantity: number;
+};
+
+export async function createOrder(
+  userId: string,
+  cartItems: CartItem[],
+): Promise<string> {
   const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum: number, item: CartItem) => sum + item.price * item.quantity,
     0,
   );
 
@@ -11,9 +22,9 @@ export async function createOrder(userId, cartItems) {
     userId,
     createdAt: Timestamp.now(),
     totalPrice,
-    items: cartItems.map((item) => ({
+    items: cartItems.map((item: CartItem) => ({
       productId: item.id,
-      title: item.title, // FIXED
+      title: item.title,
       price: item.price,
       quantity: item.quantity,
       image: item.image,

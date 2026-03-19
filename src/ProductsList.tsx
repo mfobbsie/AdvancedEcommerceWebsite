@@ -47,7 +47,7 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
   if (isLoading)
     return (
       <div className="d-flex justify-content-center mt-4">
-        <Spinner animation="border" />
+        <Spinner animation="border" role="status" />
       </div>
     );
 
@@ -71,7 +71,7 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
         const description = product.description ?? "";
         const category = product.category ?? "uncategorized";
         const image =
-          product.image ?? "https://fakestoreapi.com/icons/logo.png";
+          product.image ?? "assets/placeholder.jpg";
         const rate = product.rating?.rate ?? 0;
         const count = product.rating?.count ?? 0;
 
@@ -85,8 +85,7 @@ export default function ProductsList({ selectedCategory }: ProductsListProps) {
                 className="product-image p-3"
                 style={{ height: "220px", objectFit: "contain" }}
                 onError={(e) => {
-                  e.currentTarget.src =
-                    "https://fakestoreapi.com/icons/logo.png";
+                  e.currentTarget.src = "assets/placeholder.jpg";
                 }}
               />
 

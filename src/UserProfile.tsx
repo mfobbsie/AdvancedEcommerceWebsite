@@ -5,40 +5,40 @@ import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { deleteUser } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+type ProfileState = {
+  name: string;
+  address: string;
+  email: string;
+};
+
 export default function UserProfile() {
   const { user } = useAuth();
   const navigate = useNavigate();
-
-  const [profile, setProfile] = useState({
+  const [profile, setProfile] = useState<ProfileState>({
     name: "",
     address: "",
     email: "",
   });
-
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
       if (!user) return;
-
       const ref = doc(db, "users", user.uid);
       const snap = await getDoc(ref);
-
       if (snap.exists()) {
-        setProfile(snap.data() as typeof profile);
+        setProfile(snap.data() as ProfileState);
       } else {
-        // Create missing profile
-        await setDoc(ref, {
+        const initialProfile: ProfileState = {
           name: "",
           address: "",
           email: user.email ?? "",
+        };
+        await setDoc(ref, {
+          ...initialProfile,
           createdAt: new Date(),
         });
-        setProfile({
-          name: "",
-          address: "",
-          email: user.email ?? "",
-        });
+        setProfile(initialProfile);
       }
     }
 
@@ -64,14 +64,16 @@ export default function UserProfile() {
     if (auth.currentUser) {
       await deleteUser(auth.currentUser);
     }
-
     navigate("/");
   };
+
+  if (!user) {
+    return <p>Please log in to view your profile.</p>;
+  }
 
   return (
     <div className="container mt-4">
       <h2>Your Profile</h2>
-
       <input
         name="name"
         value={profile.name}

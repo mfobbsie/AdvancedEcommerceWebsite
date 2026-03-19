@@ -1,29 +1,45 @@
 import { useEffect, useState } from "react";
 import { db } from "./firebaseConfig";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  Timestamp,
+} from "firebase/firestore";
 import { useAuth } from "./useAuth";
 import { Link } from "react-router-dom";
 
+interface Order {
+  id: string;
+  userId: string;
+  createdAt: Timestamp;
+  totalPrice: number;
+}
+
 export default function OrderHistory() {
   const { user } = useAuth();
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     async function loadOrders() {
       if (!user) return;
 
+      const uid = user.uid;
+
       try {
         const q = query(
           collection(db, "orders"),
-          where("userId", "==", user.uid),
+          where("userId", "==", uid),
           orderBy("createdAt", "desc"),
         );
 
         const snap = await getDocs(q);
         const list = snap.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data(),
-        }));
+          ...(doc.data() as Omit<Order, "id">),
+        })) as Order[];
 
         setOrders(list);
       } catch (err) {
@@ -37,9 +53,7 @@ export default function OrderHistory() {
   return (
     <div className="container mt-4">
       <h2>Your Orders</h2>
-
       {orders.length === 0 && <p>No orders yet.</p>}
-
       <ul className="list-group">
         {orders.map((order) => (
           <li key={order.id} className="list-group-item">

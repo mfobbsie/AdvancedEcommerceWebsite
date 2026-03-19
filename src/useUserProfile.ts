@@ -11,8 +11,6 @@ export function useUserProfile() {
     if (!user) return;
 
     const ref = doc(db, "users", user.uid);
-
-    // Real-time listener
     const unsubscribe = onSnapshot(ref, (snap) => {
       if (snap.exists()) {
         setProfile(snap.data() as DocumentData);

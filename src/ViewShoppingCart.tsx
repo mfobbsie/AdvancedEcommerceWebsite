@@ -8,7 +8,6 @@ export default function ViewShoppingCart() {
   const { cartItems, removeFromCart, clearCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
-
   const [successMessage, setSuccessMessage] = useState("");
 
   const totalPrice = cartItems.reduce(
@@ -30,18 +29,19 @@ export default function ViewShoppingCart() {
       clearCart();
 
       setSuccessMessage(
-        `Checkout successful! You purchased ${totalItems} items for $${totalPrice.toFixed(2)}.`,
+        `Checkout successful! You purchased ${totalItems} items for $${totalPrice.toFixed(
+          2,
+        )}.`,
       );
 
       setTimeout(() => {
         navigate(`/orders/${orderId}`);
       }, 1500);
     } catch (error) {
-      console.error("Checkout error:", error);
+      console.error("Checkout error.", error);
       setSuccessMessage("Something went wrong during checkout.");
     }
   };
-
 
   return (
     <div className="container mt-4">
@@ -69,7 +69,6 @@ export default function ViewShoppingCart() {
                 e.currentTarget.src = "assets/placeholder.jpg";
               }}
             />
-
             <div className="flex-grow-1">
               <strong>{item.title}</strong>
               <div>
@@ -93,7 +92,6 @@ export default function ViewShoppingCart() {
           <h4 className="mt-3">
             Total Items: {totalItems} — Total Price: ${totalPrice.toFixed(2)}
           </h4>
-
           <button
             className="btn-brand-yellow mt-2"
             style={{ borderRadius: "12px" }}
@@ -101,7 +99,6 @@ export default function ViewShoppingCart() {
           >
             Clear Cart
           </button>
-
           <button
             className="btn-brand-green mt-2 ms-2"
             style={{ borderRadius: "12px" }}

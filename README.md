@@ -1,163 +1,192 @@
-# Advanced E‑Commerce Website
-A responsive, React‑based e‑commerce storefront built to demonstrate modern frontend development skills, including dynamic product filtering, global cart state management, React Router navigation, and a polished Bootstrap UI. Products are fetched from the Fake Store API, and users can browse items, filter by category, add products to a cart, and simulate a checkout experience with a lightweight success banner.
+# 🛍️ Stitch & Spark — Advanced React E‑Commerce Web App
+A modern, full‑stack e‑commerce application built with React, TypeScript, Firebase, and React Query. This project includes user authentication, product management, a shopping cart system, order history, and a fully responsive UI styled with Bootstrap.
 
-## 📌 Table of Contents
-Overview
+## 🚀 Features
+🧑‍💻 User Accounts
+Register, login, and logout with Firebase Authentication
 
-Features
+Real‑time user profile updates (name, address, email)
 
-Tech Stack
+Delete account functionality
 
-Project Structure
+## 🛒 Shopping Experience
+Add products to cart
 
-Installation
+Increase/decrease quantities
 
-Usage
+Remove items or clear entire cart
 
-API
+Checkout flow that creates an order in Firestore
 
-Screenshots
+Cart state stored globally with React Context
 
-Future Enhancements
+## 📦 Orders & History
+Orders stored in Firestore with:
 
-Credits
+userId
 
-Author
+createdAt timestamp
 
-## 🛍️ Overview
-This project is a fully functional front‑end e‑commerce experience built with React, TypeScript, React Query, React Router, and Bootstrap. It demonstrates:
+total price
 
-Clean component architecture
+list of purchased items
 
-Global state management using React Context
+Order History page showing all orders for the logged‑in user
 
-API data fetching with caching
+Order Details page showing full breakdown of each order
 
-Dynamic UI updates
+## 🛍️ Product Management
+Add new products
 
-A responsive, user‑friendly shopping flow
+Edit existing products
 
-The goal was to create a polished, real‑world style storefront while strengthening React fundamentals and modern tooling.
+Delete products
 
-## ✨ Features
-Product Listing  
-Fetches products from Fake Store API and displays them in responsive Bootstrap cards.
+Product grid with categories, filtering, and responsive layout
 
-Category Filtering  
-Users can filter products by category using a dropdown in the navbar.
+⚡ Data Fetching & State
+React Query for caching and fetching products & categories
 
-Global Shopping Cart  
-Add/remove items from anywhere in the app using a shared CartContext.
+Firestore real‑time listeners for user profile
 
-Cart Quantity Tracking  
-Navbar displays the total number of items in the cart in real time.
+## 🎨 UI & Styling
+Bootstrap 5 components
 
-Checkout Simulation  
-A lightweight success banner appears after checkout and fades out automatically.
+Custom brand colors
 
-Routing  
-React Router powers navigation between the Home page and Cart page.
+Responsive product grid
 
-Responsive UI  
-Built with Bootstrap for clean, mobile‑friendly layouts.
+Hero section and background styling
 
 ## 🧰 Tech Stack
-React + TypeScript
+### Frontend
+React (TypeScript)
 
 React Router
 
 React Query
 
-React Context API
-
 Bootstrap 5
 
-Axios
+### Backend
+Firebase Authentication
 
-Vite
+Firebase Firestore
+
+Firebase Storage (optional for product images)
+
+State Management
+React Context (Cart)
+
+React Query (Server state)
 
 ## 📁 Project Structure
 Code
 src/
-│── api.ts
 │── App.tsx
-│── CartContext.tsx
 │── main.tsx
 │── NavBar.tsx
 │── ProductsList.tsx
 │── ViewShoppingCart.tsx
-│── App.css
-## ⚙️ Installation
-Clone the repository:
-
+│── OrderHistory.tsx
+│── OrderDetails.tsx
+│── UserProfile.tsx
+│── AddProductForm.tsx
+│── EditProductForm.tsx
+│── CartContext.tsx
+│── useAuth.ts
+│── useUserProfile.ts
+│── fetchProducts.ts
+│── fetchCategories.ts
+│── createOrder.ts
+│── firebaseConfig.ts
+│── index.css
+🔧 Installation & Setup
+1. Clone the repository
 bash
-git clone https://github.com/YOUR_USERNAME/AdvancedECommerceWebsite
-cd AdvancedECommerceWebsite
-Install dependencies:
-
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+2. Install dependencies
 bash
 npm install
-Start the development server:
-
-bash
-npm run dev
-## 🚀 Usage
-Browse products on the home page
-
-Filter by category using the navbar dropdown
-
-Add items to your cart
-
-View your cart via the navbar
-
-Remove items or clear the cart
-
-Click Checkout to simulate a purchase and trigger a success banner
-
-## 🌐 API
-This project uses the Fake Store API:
+3. Configure Firebase
+Create a Firebase project and add your config inside:
 
 Code
-https://fakestoreapi.com/products
-It returns product data including:
+src/firebaseConfig.ts
+4. Start the development server
+bash
+npm run dev
+🧪 Core Functionality Overview
+🔐 Authentication
+useAuth() wraps Firebase’s onAuthStateChanged and exposes:
 
-Title
+user
 
-Price
+loading
 
-Description
+## 🛒 Cart System
+CartContext provides:
 
-Category
+cartItems
 
-Rating
+addToCart()
 
-Image
+removeFromCart()
 
-## 🔮 Future Enhancements
-Product detail pages
+clearCart()
 
-User authentication
+## 📦 Order Creation
+createOrder() writes a new order to Firestore:
 
-Persistent cart (localStorage)
+userId
 
-Search bar
+createdAt
 
-Dark mode
+totalPrice
 
-Backend integration for real checkout
+items[]
 
-## 🙏 Credits
-Fake Store API
+## 📜 Order History
+Queries Firestore for:
 
-Bootstrap documentation
+ts
+where("userId", "==", user.uid)
+orderBy("createdAt", "desc")
+Requires a composite index in Firestore.
 
-React Query documentation
+## 🧹 Known Requirements
+🔧 Firestore Composite Index Needed
+For Order History to work, create this index:
 
-Coding Temple bootcamp
+Field	Direction
+userId	Ascending
+createdAt	Descending
+Firestore will prompt you with a link when needed.
 
-GitHub Copilot assistance
+## 📸 Screenshots 
 
-👩‍💻 Author
-Mary Fobbs‑Guillory  
-Library professional transitioning into software engineering
-San Francisco Bay Area
+Home page
+<img width="1442" height="807" alt="Screenshot 2026-03-18 at 4 50 18 PM" src="https://github.com/user-attachments/assets/e7b58563-51b8-4284-9106-34b967bab0c9" />
+
+Product grid
+<img width="1441" height="893" alt="Screenshot 2026-03-18 at 4 52 00 PM" src="https://github.com/user-attachments/assets/90e97e5e-c857-479d-b6d6-fa3024de7375" />
+
+Cart
+<img width="1432" height="563" alt="Screenshot 2026-03-18 at 4 50 38 PM" src="https://github.com/user-attachments/assets/0b58c9b3-dd9a-4139-80a2-d787f9b33cb4" />
+
+Order history
+<img width="1371" height="473" alt="Screenshot 2026-03-18 at 4 53 22 PM" src="https://github.com/user-attachments/assets/6c1c463c-6e58-4e1e-bf00-32702dc7e153" />
+<img width="1348" height="576" alt="Screenshot 2026-03-18 at 5 00 40 PM" src="https://github.com/user-attachments/assets/8f815050-bc60-4d61-9bdc-8ef03ac0370e" />
+
+
+Profile page 
+<img width="1379" height="396" alt="Screenshot 2026-03-18 at 4 52 45 PM" src="https://github.com/user-attachments/assets/1bd50ad1-7f47-4d14-8f32-24435f68c08f" />
+
+
+## 🤝 Contributing
+Pull requests are welcome!
+If you’d like to add features (Stripe checkout, product search, admin dashboard), feel free to open an issue.
+
+## 📄 License
+MIT License — free to use and modify.
